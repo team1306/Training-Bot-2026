@@ -2,6 +2,7 @@ package frc.robot.subsystems.intake;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import java.util.function.Supplier;
@@ -45,11 +46,11 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void deploy() {
-    deployX60.setControl(new PositionVoltage(0.25));
+    deployX60.setControl(new PositionTorqueCurrentFOC(0.25));
   }
 
   @Override
   public void retract() {
-    deployX60.setControl(new PositionVoltage(-0.25));
+    deployX60.setControl(new PositionTorqueCurrentFOC(-0.25));
   }
 }
