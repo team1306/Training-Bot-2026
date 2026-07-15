@@ -18,26 +18,22 @@ public class IntakeIOReal implements IntakeIO {
 
   public IntakeIOReal() {
 
-    upperIntakeX60.getConfigurator().apply(IntakeConstants.configX60);
-    lowerIntakeX60.getConfigurator().apply(IntakeConstants.configX60);
-    upperIntakeX44.getConfigurator().apply(IntakeConstants.configX44);
-    lowerIntakeX44.getConfigurator().apply(IntakeConstants.configX44);
+    upperIntakeX60.getConfigurator().apply(IntakeConstants.config);
+    lowerIntakeX60.getConfigurator().apply(IntakeConstants.configInverted);
+    upperIntakeX44.getConfigurator().apply(IntakeConstants.config);
+    lowerIntakeX44.getConfigurator().apply(IntakeConstants.configInverted);
 
-    deployX60.getConfigurator().apply(IntakeConstants.configDeployX60);
+    deployX60.getConfigurator().apply(IntakeConstants.configDeploy);
   }
 
   @Override
   public void setDutyCycle(double dutyCycle) {
-    spinUp(() -> dutyCycle);
+      upperIntakeX60.setControl(new DutyCycleOut(dutyCycle));
+    lowerIntakeX60.setControl(new DutyCycleOut(dutyCycle));
+    upperIntakeX44.setControl(new DutyCycleOut(dutyCycle));
+    lowerIntakeX44.setControl(new DutyCycleOut(dutyCycle));
   }
 
-  public void spinUp(Supplier<Double> speedSupplier) {
-    // this.intakeIO.setDutyCycle(speedSupplier.get());
-    upperIntakeX60.setControl(new DutyCycleOut(speedSupplier.get()));
-    lowerIntakeX60.setControl(new DutyCycleOut(speedSupplier.get()));
-    upperIntakeX44.setControl(new DutyCycleOut(speedSupplier.get()));
-    lowerIntakeX44.setControl(new DutyCycleOut(speedSupplier.get()));
-  }
 
   @Override
   public void stopMotor() {
