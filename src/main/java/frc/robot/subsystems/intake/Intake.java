@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 public class Intake extends SubsystemBase {
 
   IntakeIO intakeIO;
@@ -12,6 +14,7 @@ public class Intake extends SubsystemBase {
 
   public void spinUp(double speedSupplier) {
     intakeIO.setDutyCycle(speedSupplier);
+    Logger.recordOutput("intake/speed", speedSupplier);
   }
 
   public void stopMotor() {
