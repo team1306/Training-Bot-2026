@@ -38,6 +38,6 @@ public class IntakeConstants {
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
 
-  public static TalonFXConfiguration configDeploy = config.clone()
-    .withSlot0(new Slot0Configs().withKP(KP).withKD(KD).withKS(KS));
+  public static TalonFXConfiguration configDeploy =
+      config.clone().withSlot0(new Slot0Configs().withKP(KP).withKD(KD).withKS(KS));
 }

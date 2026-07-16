@@ -1,5 +1,3 @@
-package frc.robot.subsystems.intake;
-
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Celsius;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
