@@ -3,9 +3,7 @@ package frc.robot.subsystems.intake;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import java.util.function.Supplier;
 
 public class IntakeIOReal implements IntakeIO {
 
@@ -29,12 +27,11 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void setDutyCycle(double dutyCycle) {
-      upperIntakeX60.setControl(new DutyCycleOut(dutyCycle));
+    upperIntakeX60.setControl(new DutyCycleOut(dutyCycle));
     lowerIntakeX60.setControl(new DutyCycleOut(dutyCycle));
     upperIntakeX44.setControl(new DutyCycleOut(dutyCycle));
     lowerIntakeX44.setControl(new DutyCycleOut(dutyCycle));
   }
-
 
   @Override
   public void stopMotor() {
