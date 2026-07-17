@@ -1,5 +1,8 @@
 package frc.robot.subsystems.intake;
 
+import badgerutils.advantagekit.PIDTunable;
+import badgerutils.advantagekit.talonfx.TalonFXSignals;
+import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
@@ -15,6 +18,14 @@ public class IntakeIOReal implements IntakeIO {
 
   TalonFX deployX60 = new TalonFX(IntakeConstants.deployID);
 
+  private final TalonFXSignals upperLeftMotorSignal;
+  private final TalonFXSignals upperRightMotorSignal;
+  private final TalonFXSignals lowerLeftMotorSignal;
+  private final TalonFXSignals lowerRightMotorSignal;
+  private final TalonFXSignals deployMotorSignal;
+
+  private final PIDTunable pidTunable;
+
   public IntakeIOReal() {
 
     upperIntakeX60.getConfigurator().apply(IntakeConstants.config);
@@ -23,6 +34,15 @@ public class IntakeIOReal implements IntakeIO {
     lowerIntakeX44.getConfigurator().apply(IntakeConstants.configInverted);
 
     deployX60.getConfigurator().apply(IntakeConstants.configDeploy);
+
+    lowerLeftMotorSignal = new TalonFXSignals(lowerIntakeX60);
+    lowerRightMotorSignal = new TalonFXSignals(lowerIntakeX44);
+    upperLeftMotorSignal = new TalonFXSignals(upperIntakeX60);
+    upperRightMotorSignal = new TalonFXSignals(upperIntakeX44);
+    deployMotorSignal = new TalonFXSignals(deployX60);
+
+    pidTunable =
+        new PIDTunable("intake", SlotConfigs.from(IntakeConstants.configDeploy.Slot0), deployX60);
   }
 
   @Override
@@ -49,5 +69,14 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void retract() {
     deployX60.setControl(new PositionTorqueCurrentFOC(-0.25));
+  }
+
+  @Override
+  public void updateInputs(IntakeIOInputs inputs) {
+    inputs.deployX60 = deployMotorSignal.createLoggedTalonFX();
+    inputs.upperLeftX60 = upperLeftMotorSignal.createLoggedTalonFX();
+    inputs.upperRightX60 = upperRightMotorSignal.createLoggedTalonFX();
+    inputs.lowerLeftX60 = lowerLeftMotorSignal.createLoggedTalonFX();
+    inputs.lowerRightX60 = lowerRightMotorSignal.createLoggedTalonFX();
   }
 }
