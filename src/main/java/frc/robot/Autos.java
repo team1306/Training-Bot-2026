@@ -7,12 +7,16 @@ import badgerutils.triggers.AllianceTriggers;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.FlippingUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.DriveCommands;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.intake.Intake;
@@ -50,6 +54,86 @@ public class Autos {
     }
 
     autoChooser.addOption("Deploy", new Auto("Deploy", intake.deployCommand()));
+    autoChooser.addOption(
+        "Deploy & Outtake",
+        new Auto(
+            "Deploy & Outtake",
+            new SequentialCommandGroup(
+                intake.deployCommand(),
+                Commands.waitSeconds(2),
+                intake.speedCommand(() -> -1.).withTimeout(8))));
+    autoChooser.addOption(
+        "Deploy, Outtake, Drive",
+        new Auto(
+            "Deploy, Outtake, Drive",
+            new SequentialCommandGroup(
+                intake.deployCommand(),
+                Commands.waitSeconds(2),
+                intake.speedCommand(() -> -1.0).withTimeout(8),
+                DriveCommands.joystickDriveCommand(
+                        drive, () -> 0, () -> -.3, () -> 0, () -> 1, () -> 1)
+                    .withTimeout(5))));
+    autoChooser.addOption(
+        "Center & Face Forward (spin right)",
+        new Auto(
+            "Center & Face Forward (spin right)",
+            new SequentialCommandGroup(
+                intake.deployCommand(),
+                Commands.waitSeconds(2),
+                intake.speedCommand(() -> -1.0).withTimeout(8),
+                DriveCommands.joystickDriveCommand(
+                        drive, () -> 0, () -> -.3, () -> 0, () -> 1, () -> 1)
+                    .withTimeout(5),
+                DriveCommands.joystickDriveCommand(
+                        drive, () -> 0, () -> 0, () -> .3, () -> 1, () -> 1)
+                    .withTimeout(4))));
+    autoChooser.addOption(
+        "Center & Face Forward (spin left)",
+        new Auto(
+            "Center & Face Forward (spin left)",
+            new SequentialCommandGroup(
+                intake.deployCommand(),
+                Commands.waitSeconds(2),
+                intake.speedCommand(() -> -1.0).withTimeout(8),
+                DriveCommands.joystickDriveCommand(
+                        drive, () -> 0, () -> -.3, () -> 0, () -> 1, () -> 1)
+                    .withTimeout(5),
+                DriveCommands.joystickDriveCommand(
+                        drive, () -> 0, () -> 0, () -> -.3, () -> 1, () -> 1)
+                    .withTimeout(4))));
+
+    SlewRateLimiter limiter = new SlewRateLimiter(1, 0, 0.3);
+    autoChooser.addOption(
+        "Disruption (spin right)",
+        new Auto(
+            "Disruption (spin right)",
+            new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        intake.deployCommand(),
+                        DriveCommands.joystickDriveCommand(
+                            drive, () -> 0, () -> limiter.calculate(1), () -> 0, () -> 1, () -> 1))
+                    .withTimeout(.7),
+                DriveCommands.joystickDriveCommand(
+                        drive, () -> 0, () -> 1, () -> 0, () -> 1, () -> 1)
+                    .withTimeout(.5),
+                DriveCommands.joystickDriveCommand(
+                        drive, () -> 0, () -> 0, () -> 1, () -> 1, () -> 1)
+                    .withTimeout(4))));
+    autoChooser.addOption(
+        "Disruption (spin left)",
+        new Auto(
+            "Disruption (spin left)",
+            new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        intake.deployCommand(),
+                        DriveCommands.joystickDriveCommand(
+                            drive, () -> 0, () -> limiter.calculate(1), () -> 0, () -> 1, () -> 1))
+                    .withTimeout(0.7),
+                DriveCommands.joystickDriveCommand(
+                        drive, () -> 0, () -> 1, () -> 0, () -> 1, () -> 1)
+                    .withTimeout(0.5),
+                DriveCommands.joystickDriveCommand(
+                    drive, () -> 0, () -> 0, () -> -1, () -> 1, () -> 1))));
 
     Controls.addPersistentTrigger(
         () ->
