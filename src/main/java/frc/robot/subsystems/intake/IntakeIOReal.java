@@ -68,7 +68,7 @@ public class IntakeIOReal implements IntakeIO {
     if (deployed == true) return;
 
     deployed = true;
-    deployX60.setControl(new PositionTorqueCurrentFOC(0.33333));
+    deployX60.setControl(new PositionTorqueCurrentFOC(IntakeConstants.deployAngleChange));
   }
 
   @Override
@@ -76,7 +76,7 @@ public class IntakeIOReal implements IntakeIO {
     if (deployed == false) return;
 
     deployed = false;
-    deployX60.setControl(new PositionTorqueCurrentFOC(-0.33333));
+    deployX60.setControl(new PositionTorqueCurrentFOC(-IntakeConstants.deployAngleChange));
   }
 
   @Override

@@ -19,6 +19,7 @@ public class IntakeConstants {
   public static final double KP = 1;
   public static final double KD = 0;
   public static final double KS = 0;
+  public static final double deployAngleChange = 105.0 / 360.0;
   public static TalonFXConfiguration config =
       new TalonFXConfiguration()
           .withMotorOutput(
