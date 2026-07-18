@@ -18,6 +18,8 @@ public class IntakeIOReal implements IntakeIO {
 
   TalonFX deployX60 = new TalonFX(IntakeConstants.deployID);
 
+  private boolean deployed = false;
+
   private final TalonFXSignals upperLeftMotorSignal;
   private final TalonFXSignals upperRightMotorSignal;
   private final TalonFXSignals lowerLeftMotorSignal;
@@ -63,12 +65,18 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void deploy() {
-    deployX60.setControl(new PositionTorqueCurrentFOC(0.25));
+    if (deployed == true) return;
+
+    deployed = true;
+    deployX60.setControl(new PositionTorqueCurrentFOC(0.33333));
   }
 
   @Override
   public void retract() {
-    deployX60.setControl(new PositionTorqueCurrentFOC(-0.25));
+    if (deployed == false) return;
+
+    deployed = false;
+    deployX60.setControl(new PositionTorqueCurrentFOC(-0.33333));
   }
 
   @Override
