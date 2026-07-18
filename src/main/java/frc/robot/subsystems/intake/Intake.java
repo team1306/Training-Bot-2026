@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
-
   IntakeIO intakeIO;
   IntakeIOInputsAutoLogged intakeIOInputs = new IntakeIOInputsAutoLogged();
 

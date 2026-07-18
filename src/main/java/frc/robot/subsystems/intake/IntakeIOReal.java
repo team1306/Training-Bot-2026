@@ -10,37 +10,37 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 public class IntakeIOReal implements IntakeIO {
 
-  TalonFX upperIntakeX60 = new TalonFX(IntakeConstants.upperX60id);
-  TalonFX upperIntakeX44 = new TalonFX(IntakeConstants.upperX44id);
+  TalonFX leftIntakeX60 = new TalonFX(IntakeConstants.leftX60id);
+  TalonFX leftIntakeX44 = new TalonFX(IntakeConstants.leftX44id);
 
-  TalonFX lowerIntakeX60 = new TalonFX(IntakeConstants.lowerX60id);
-  TalonFX lowerIntakeX44 = new TalonFX(IntakeConstants.lowerX44id);
+  TalonFX rightIntakeX60 = new TalonFX(IntakeConstants.rightX60id);
+  TalonFX rightIntakeX44 = new TalonFX(IntakeConstants.rightX44id);
 
   TalonFX deployX60 = new TalonFX(IntakeConstants.deployID);
 
   private boolean deployed = false;
 
-  private final TalonFXSignals upperLeftMotorSignal;
-  private final TalonFXSignals upperRightMotorSignal;
-  private final TalonFXSignals lowerLeftMotorSignal;
-  private final TalonFXSignals lowerRightMotorSignal;
+  private final TalonFXSignals leftX60MotorSignal;
+  private final TalonFXSignals leftX44MotorSignal;
+  private final TalonFXSignals rightX60MotorSignal;
+  private final TalonFXSignals rightX44MotorSignal;
   private final TalonFXSignals deployMotorSignal;
 
   private final PIDTunable pidTunable;
 
   public IntakeIOReal() {
 
-    upperIntakeX60.getConfigurator().apply(IntakeConstants.config);
-    lowerIntakeX60.getConfigurator().apply(IntakeConstants.configInverted);
-    upperIntakeX44.getConfigurator().apply(IntakeConstants.config);
-    lowerIntakeX44.getConfigurator().apply(IntakeConstants.configInverted);
+    leftIntakeX60.getConfigurator().apply(IntakeConstants.config);
+    rightIntakeX60.getConfigurator().apply(IntakeConstants.configInverted);
+    leftIntakeX44.getConfigurator().apply(IntakeConstants.config);
+    rightIntakeX44.getConfigurator().apply(IntakeConstants.configInverted);
 
     deployX60.getConfigurator().apply(IntakeConstants.configDeploy);
 
-    lowerLeftMotorSignal = new TalonFXSignals(lowerIntakeX60);
-    lowerRightMotorSignal = new TalonFXSignals(lowerIntakeX44);
-    upperLeftMotorSignal = new TalonFXSignals(upperIntakeX60);
-    upperRightMotorSignal = new TalonFXSignals(upperIntakeX44);
+    rightX60MotorSignal = new TalonFXSignals(rightIntakeX60);
+    rightX44MotorSignal = new TalonFXSignals(rightIntakeX44);
+    leftX60MotorSignal = new TalonFXSignals(leftIntakeX60);
+    leftX44MotorSignal = new TalonFXSignals(leftIntakeX44);
     deployMotorSignal = new TalonFXSignals(deployX60);
 
     pidTunable =
@@ -49,18 +49,18 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void setDutyCycle(double dutyCycle) {
-    upperIntakeX60.setControl(new DutyCycleOut(dutyCycle));
-    lowerIntakeX60.setControl(new DutyCycleOut(dutyCycle));
-    upperIntakeX44.setControl(new DutyCycleOut(dutyCycle));
-    lowerIntakeX44.setControl(new DutyCycleOut(dutyCycle));
+    leftIntakeX60.setControl(new DutyCycleOut(dutyCycle));
+    rightIntakeX60.setControl(new DutyCycleOut(dutyCycle));
+    leftIntakeX44.setControl(new DutyCycleOut(dutyCycle));
+    rightIntakeX44.setControl(new DutyCycleOut(dutyCycle));
   }
 
   @Override
   public void stopMotor() {
-    upperIntakeX60.setControl(new NeutralOut());
-    lowerIntakeX60.setControl(new NeutralOut());
-    upperIntakeX44.setControl(new NeutralOut());
-    lowerIntakeX44.setControl(new NeutralOut());
+    leftIntakeX60.setControl(new NeutralOut());
+    rightIntakeX60.setControl(new NeutralOut());
+    leftIntakeX44.setControl(new NeutralOut());
+    rightIntakeX44.setControl(new NeutralOut());
   }
 
   @Override
@@ -82,9 +82,9 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.deployX60 = deployMotorSignal.createLoggedTalonFX();
-    inputs.upperLeftX60 = upperLeftMotorSignal.createLoggedTalonFX();
-    inputs.upperRightX60 = upperRightMotorSignal.createLoggedTalonFX();
-    inputs.lowerLeftX60 = lowerLeftMotorSignal.createLoggedTalonFX();
-    inputs.lowerRightX60 = lowerRightMotorSignal.createLoggedTalonFX();
+    inputs.leftX60 = leftX60MotorSignal.createLoggedTalonFX();
+    inputs.rightX60 = rightX60MotorSignal.createLoggedTalonFX();
+    inputs.leftX44 = leftX44MotorSignal.createLoggedTalonFX();
+    inputs.rightX44 = rightX44MotorSignal.createLoggedTalonFX();
   }
 }

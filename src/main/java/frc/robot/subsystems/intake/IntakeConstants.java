@@ -11,11 +11,11 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class IntakeConstants {
-  public static final int upperX60id = 1;
-  public static final int upperX44id = 2;
-  public static final int lowerX60id = 3;
-  public static final int lowerX44id = 4;
-  public static final int deployID = 5;
+  public static final int leftX60id = 22;
+  public static final int leftX44id = 21;
+  public static final int rightX60id = 24;
+  public static final int rightX44id = 23;
+  public static final int deployID = 25;
   public static final double KP = 1;
   public static final double KD = 0;
   public static final double KS = 0;

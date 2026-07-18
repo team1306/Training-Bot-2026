@@ -7,10 +7,10 @@ import org.littletonrobotics.junction.AutoLog;
 public interface IntakeIO {
   @AutoLog
   public static class IntakeIOInputs {
-    public LoggedTalonFX upperRightX60;
-    public LoggedTalonFX upperLeftX60;
-    public LoggedTalonFX lowerRightX60;
-    public LoggedTalonFX lowerLeftX60;
+    public LoggedTalonFX rightX60;
+    public LoggedTalonFX leftX60;
+    public LoggedTalonFX rightX44;
+    public LoggedTalonFX leftX44;
     public LoggedTalonFX deployX60;
   }
 
