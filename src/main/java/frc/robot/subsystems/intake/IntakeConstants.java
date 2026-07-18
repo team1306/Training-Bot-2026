@@ -37,8 +37,10 @@ public class IntakeConstants {
       config
           .clone()
           .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
+              new MotorOutputConfigs()
+                  .withInverted(InvertedValue.CounterClockwise_Positive)
+                  .withNeutralMode(NeutralModeValue.Brake));
 
   public static TalonFXConfiguration configDeploy =
-      config.clone().withSlot0(new Slot0Configs().withKP(KP).withKD(KD).withKS(KS));
+      configInverted.clone().withSlot0(new Slot0Configs().withKP(KP).withKD(KD).withKS(KS));
 }
