@@ -17,9 +17,11 @@ public class CompetitionControllerMapping extends ControllerMapping {
   public CompetitionControllerMapping(
       CommandXboxController driverController,
       CommandXboxController operatorController,
-      Drive drive) {
+      Drive drive,
+      Intake intake) {
     super(driverController, operatorController);
     this.drive = drive;
+    this.intake = intake;
   }
 
   @Override
@@ -50,20 +52,10 @@ public class CompetitionControllerMapping extends ControllerMapping {
                 .ignoringDisable(true));
 
     /* ---P2--- */
-    operatorController
-        .a()
-        .whileTrue(
-            Commands.startEnd(
-                () -> intake.speedCommand(() -> 0.8), () -> intake.stopMotorCommand(), intake));
-    operatorController
-        .y()
-        .whileTrue(
-            Commands.startEnd(
-                () -> intake.speedCommand(() -> -0.8), () -> intake.stopMotorCommand(), intake));
-    operatorController.leftBumper().onTrue(Commands.runOnce(() -> intake.deployCommand(), intake));
-    operatorController
-        .rightBumper()
-        .onTrue(Commands.runOnce(() -> intake.retractCommand(), intake));
+    operatorController.a().whileTrue(intake.speedCommand(() -> 1.0));
+    operatorController.y().whileTrue(intake.speedCommand(() -> -0.5));
+    operatorController.leftBumper().onTrue(intake.deployCommand());
+    operatorController.rightBumper().onTrue(intake.retractCommand());
   }
 
   @Override

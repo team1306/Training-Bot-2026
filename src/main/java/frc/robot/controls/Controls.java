@@ -32,7 +32,7 @@ public class Controls {
 
     mappings.put(
         ControlStates.COMPETITION,
-        new CompetitionControllerMapping(driverController, operatorController, drivetrain));
+        new CompetitionControllerMapping(driverController, operatorController, drivetrain, intake));
 
     Consumer<Enum<ControlStates>> onChange =
         (nextState) -> {
