@@ -9,6 +9,9 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeIOEmpty;
+import frc.robot.subsystems.intake.IntakeIOReal;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,6 +22,7 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 public class RobotContainer {
   // Subsystems
   public final Drive drive;
+  public final Intake intake;
 
   private final Controls controls;
   private final Autos autos;
@@ -34,6 +38,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
+        intake = new Intake(new IntakeIOReal());
         break;
 
       case SIM:
@@ -45,6 +50,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
+        intake = new Intake(new IntakeIOEmpty());
         break;
 
       default:
@@ -56,11 +62,12 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+        intake = new Intake(new IntakeIOEmpty());
         break;
     }
 
-    controls = new Controls(drive);
-    autos = new Autos(drive);
+    controls = new Controls(drive, intake);
+    autos = new Autos(drive, intake);
   }
 
   public Command getAutonomousCommand() {

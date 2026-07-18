@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.intake.Intake;
+
 import java.util.List;
 import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -33,7 +35,7 @@ public class Autos {
 
   private static final List<String> autoNames = AutoBuilder.getAllAutoNames();
 
-  public Autos(Drive drive) {
+  public Autos(Drive drive, Intake intake) {
     this.drive = drive;
 
     // Initialize commands here
@@ -47,6 +49,9 @@ public class Autos {
     for (String auto : autoNames) {
       autoChooser.addOption(auto, new Auto(auto, auto));
     }
+
+    autoChooser.addOption("Deploy", new Auto("Deploy", intake.deployCommand()));
+    
 
     Controls.addPersistentTrigger(
         () ->

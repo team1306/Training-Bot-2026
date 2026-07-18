@@ -10,6 +10,10 @@ public class Intake extends SubsystemBase {
   IntakeIO intakeIO;
   IntakeIOInputsAutoLogged intakeIOInputs = new IntakeIOInputsAutoLogged();
 
+  public Intake(IntakeIO intakeIO) {
+    this.intakeIO = intakeIO;
+  }
+
   public void spinUp(double speedSupplier) {
     intakeIO.setDutyCycle(speedSupplier);
     Logger.recordOutput("intake/speed", speedSupplier);

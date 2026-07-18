@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.intake.Intake;
+
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +26,7 @@ public class Controls {
 
   private static final Set<Supplier<Trigger>> persistentTriggers = new HashSet<>();
 
-  public Controls(Drive drivetrain) {
+  public Controls(Drive drivetrain, Intake intake) {
     DriverStation.silenceJoystickConnectionWarning(true);
     driverController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
