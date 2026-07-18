@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.intake.Intake;
-
 import java.util.List;
 import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -51,7 +50,6 @@ public class Autos {
     }
 
     autoChooser.addOption("Deploy", new Auto("Deploy", intake.deployCommand()));
-    
 
     Controls.addPersistentTrigger(
         () ->

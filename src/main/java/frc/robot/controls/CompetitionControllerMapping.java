@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.intake.Intake;
 
 public class CompetitionControllerMapping extends ControllerMapping {
 
   private final Drive drive;
+  private Intake intake;
 
   public CompetitionControllerMapping(
       CommandXboxController driverController,
@@ -48,7 +50,20 @@ public class CompetitionControllerMapping extends ControllerMapping {
                 .ignoringDisable(true));
 
     /* ---P2--- */
-
+    operatorController
+        .a()
+        .whileTrue(
+            Commands.startEnd(
+                () -> intake.speedCommand(() -> 0.8), () -> intake.stopMotorCommand(), intake));
+    operatorController
+        .y()
+        .whileTrue(
+            Commands.startEnd(
+                () -> intake.speedCommand(() -> -0.8), () -> intake.stopMotorCommand(), intake));
+    operatorController.leftBumper().onTrue(Commands.runOnce(() -> intake.deployCommand(), intake));
+    operatorController
+        .rightBumper()
+        .onTrue(Commands.runOnce(() -> intake.retractCommand(), intake));
   }
 
   @Override

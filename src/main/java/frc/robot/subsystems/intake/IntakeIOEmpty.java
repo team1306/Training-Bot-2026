@@ -1,5 +1,3 @@
 package frc.robot.subsystems.intake;
 
-public class IntakeIOEmpty implements IntakeIO {
-    
-}
+public class IntakeIOEmpty implements IntakeIO {}

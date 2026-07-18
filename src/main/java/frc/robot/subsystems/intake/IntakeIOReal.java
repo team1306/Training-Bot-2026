@@ -31,8 +31,8 @@ public class IntakeIOReal implements IntakeIO {
   public IntakeIOReal() {
 
     leftIntakeX60.getConfigurator().apply(IntakeConstants.config);
-    rightIntakeX60.getConfigurator().apply(IntakeConstants.configInverted);
-    leftIntakeX44.getConfigurator().apply(IntakeConstants.config);
+    rightIntakeX60.getConfigurator().apply(IntakeConstants.config);
+    leftIntakeX44.getConfigurator().apply(IntakeConstants.configInverted);
     rightIntakeX44.getConfigurator().apply(IntakeConstants.configInverted);
 
     deployX60.getConfigurator().apply(IntakeConstants.configDeploy);
