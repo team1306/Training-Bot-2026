@@ -17,9 +17,11 @@ public class CompetitionControllerMapping extends ControllerMapping {
   public CompetitionControllerMapping(
       CommandXboxController driverController,
       CommandXboxController operatorController,
-      Drive drive) {
+      Drive drive,
+      Intake intake) {
     super(driverController, operatorController);
     this.drive = drive;
+    this.intake = intake;
   }
 
   @Override
