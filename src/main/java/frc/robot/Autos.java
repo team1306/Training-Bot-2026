@@ -49,7 +49,7 @@ public class Autos {
       autoChooser.addOption(auto, new Auto(auto, auto));
     }
 
-    autoChooser.addOption("Deploy", new Auto("Deploy", intake.deployCommand()));
+    autoChooser.addOption("Deploy", new Auto("Deploy", intake.deployIntakeCommand()));
 
     Controls.addPersistentTrigger(
         () ->

@@ -24,12 +24,16 @@ public class Intake extends SubsystemBase {
     intakeIO.stopMotor();
   }
 
-  public void deploy() {
+  public void deployIntake() {
     intakeIO.deploy();
   }
 
   public void retract() {
     intakeIO.retract();
+  }
+
+  public void stopDeployMotor() {
+    intakeIO.stopDeploy();
   }
 
   public Command speedCommand(Supplier<Double> supplier) {
@@ -40,11 +44,12 @@ public class Intake extends SubsystemBase {
     return new InstantCommand(() -> this.stopMotor(), this);
   }
 
-  public Command deployCommand() {
-    return Commands.runOnce(() -> deploy(), this);
+  public Command deployIntakeCommand() {
+    return Commands.startEnd(() -> deployIntake(), () -> stopDeployMotor(), this)
+        .withDeadline(Commands.waitSeconds(0.5));
   }
 
   public Command retractCommand() {
-    return Commands.runOnce(() -> retract(), this);
+    return Commands.startEnd(() -> retract(), () -> stopDeployMotor(), this);
   }
 }

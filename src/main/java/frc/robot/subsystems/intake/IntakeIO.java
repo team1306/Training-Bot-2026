@@ -24,5 +24,7 @@ public interface IntakeIO {
 
   public default void deploy() {}
 
+  public default void stopDeploy() {}
+
   public default void retract() {}
 }

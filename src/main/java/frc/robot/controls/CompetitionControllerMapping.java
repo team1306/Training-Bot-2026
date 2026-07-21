@@ -60,7 +60,9 @@ public class CompetitionControllerMapping extends ControllerMapping {
         .whileTrue(
             Commands.startEnd(
                 () -> intake.speedCommand(() -> -0.8), () -> intake.stopMotorCommand(), intake));
-    operatorController.leftBumper().onTrue(Commands.runOnce(() -> intake.deployCommand(), intake));
+    operatorController
+        .leftBumper()
+        .onTrue(Commands.runOnce(() -> intake.deployIntakeCommand(), intake));
     operatorController
         .rightBumper()
         .onTrue(Commands.runOnce(() -> intake.retractCommand(), intake));

@@ -5,7 +5,6 @@ import badgerutils.advantagekit.talonfx.TalonFXSignals;
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 public class IntakeIOReal implements IntakeIO {
@@ -65,18 +64,17 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void deploy() {
-    if (deployed == true) return;
+    deployX60.setControl(new DutyCycleOut(1));
+  }
 
-    deployed = true;
-    deployX60.setControl(new PositionTorqueCurrentFOC(IntakeConstants.deployAngleChange));
+  @Override
+  public void stopDeploy() {
+    deployX60.setControl(new DutyCycleOut(0));
   }
 
   @Override
   public void retract() {
-    if (deployed == false) return;
-
-    deployed = false;
-    deployX60.setControl(new PositionTorqueCurrentFOC(-IntakeConstants.deployAngleChange));
+    deployX60.setControl(new DutyCycleOut(-0.2));
   }
 
   @Override
