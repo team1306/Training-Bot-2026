@@ -43,4 +43,6 @@ public class IntakeConstants {
 
   public static TalonFXConfiguration configDeploy =
       configInverted.clone().withSlot0(new Slot0Configs().withKP(KP).withKD(KD).withKS(KS));
+
+  public static final double intakeDeployTime = 0.5;
 }

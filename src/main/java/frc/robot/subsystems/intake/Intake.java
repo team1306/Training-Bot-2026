@@ -24,15 +24,15 @@ public class Intake extends SubsystemBase {
     intakeIO.stopMotor();
   }
 
-  public void deployIntake() {
+  private void deployIntake() {
     intakeIO.deploy();
   }
 
-  public void retract() {
+  private void retract() {
     intakeIO.retract();
   }
 
-  public void stopDeployMotor() {
+  private void stopDeployMotor() {
     intakeIO.stopDeploy();
   }
 
@@ -45,8 +45,7 @@ public class Intake extends SubsystemBase {
   }
 
   public Command deployIntakeCommand() {
-    return Commands.startEnd(() -> deployIntake(), () -> stopDeployMotor(), this)
-        .withDeadline(Commands.waitSeconds(0.5));
+    return Commands.startEnd(() -> deployIntake(), () -> stopDeployMotor(), this);
   }
 
   public Command retractCommand() {
