@@ -52,16 +52,9 @@ public class CompetitionControllerMapping extends ControllerMapping {
                 .ignoringDisable(true));
 
     /* ---P2--- */
-    operatorController
-        .a()
-        .whileTrue(
-            Commands.startEnd(
-                () -> intake.speedCommand(() -> 0.8), () -> intake.stopMotorCommand(), intake));
-    operatorController
-        .y()
-        .whileTrue(
-            Commands.startEnd(
-                () -> intake.speedCommand(() -> -0.8), () -> intake.stopMotorCommand(), intake));
+    operatorController.a().whileTrue(intake.speedCommand(() -> 0.8));
+    operatorController.y().whileTrue(intake.speedCommand(() -> -0.8));
+
     operatorController
         .leftBumper()
         .onTrue(Commands.runOnce(() -> intake.deployIntakeCommand(), intake));

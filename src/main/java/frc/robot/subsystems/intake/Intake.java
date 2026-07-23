@@ -9,6 +9,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
   IntakeIO intakeIO;
+  IntakeIOReal intakeIOReal;
   IntakeIOInputsAutoLogged intakeIOInputs = new IntakeIOInputsAutoLogged();
 
   public Intake(IntakeIO intakeIO) {
@@ -17,6 +18,7 @@ public class Intake extends SubsystemBase {
 
   public void spinUp(double speedSupplier) {
     intakeIO.setDutyCycle(speedSupplier);
+    System.out.println("2");
     Logger.recordOutput("intake/speed", speedSupplier);
   }
 
