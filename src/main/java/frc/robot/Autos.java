@@ -20,6 +20,7 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.controls.Controls;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeConstants;
 import java.util.List;
 import java.util.Optional;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -53,13 +54,16 @@ public class Autos {
       autoChooser.addOption(auto, new Auto(auto, auto));
     }
 
-    autoChooser.addOption("Deploy", new Auto("Deploy", intake.deployIntakeCommand()));
+    autoChooser.addOption(
+        "Deploy",
+        new Auto(
+            "Deploy", intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime)));
     autoChooser.addOption(
         "Deploy & Outtake",
         new Auto(
             "Deploy & Outtake",
             new SequentialCommandGroup(
-                intake.deployIntakeCommand(),
+                intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime),
                 Commands.waitSeconds(2),
                 intake.speedCommand(() -> -1.).withTimeout(8))));
     autoChooser.addOption(
@@ -67,7 +71,7 @@ public class Autos {
         new Auto(
             "Deploy, Outtake, Drive",
             new SequentialCommandGroup(
-                intake.deployIntakeCommand(),
+                intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime),
                 Commands.waitSeconds(2),
                 intake.speedCommand(() -> -1.0).withTimeout(8),
                 DriveCommands.joystickDriveCommand(
@@ -78,7 +82,7 @@ public class Autos {
         new Auto(
             "Center & Face Forward (spin right)",
             new SequentialCommandGroup(
-                intake.deployIntakeCommand(),
+                intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime),
                 Commands.waitSeconds(2),
                 intake.speedCommand(() -> -1.0).withTimeout(8),
                 DriveCommands.joystickDriveCommand(
@@ -92,7 +96,7 @@ public class Autos {
         new Auto(
             "Center & Face Forward (spin left)",
             new SequentialCommandGroup(
-                intake.deployIntakeCommand(),
+                intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime),
                 Commands.waitSeconds(2),
                 intake.speedCommand(() -> -1.0).withTimeout(8),
                 DriveCommands.joystickDriveCommand(
@@ -109,7 +113,7 @@ public class Autos {
             "Disruption (spin right)",
             new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                        intake.deployIntakeCommand(),
+                        intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime),
                         DriveCommands.joystickDriveCommand(
                             drive, () -> 0, () -> limiter.calculate(1), () -> 0, () -> 1, () -> 1))
                     .withTimeout(.7),
@@ -125,7 +129,7 @@ public class Autos {
             "Disruption (spin left)",
             new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                        intake.deployIntakeCommand(),
+                        intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime),
                         DriveCommands.joystickDriveCommand(
                             drive, () -> 0, () -> limiter.calculate(1), () -> 0, () -> 1, () -> 1))
                     .withTimeout(0.7),
