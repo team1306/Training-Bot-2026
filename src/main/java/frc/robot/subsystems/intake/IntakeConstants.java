@@ -45,4 +45,5 @@ public class IntakeConstants {
       configInverted.clone().withSlot0(new Slot0Configs().withKP(KP).withKD(KD).withKS(KS));
 
   public static final double intakeDeployTime = 0.5;
+  public static final double intakeSpeed = 0.8;
 }

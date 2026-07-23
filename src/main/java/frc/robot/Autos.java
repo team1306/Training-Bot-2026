@@ -65,7 +65,7 @@ public class Autos {
             new SequentialCommandGroup(
                 intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime),
                 Commands.waitSeconds(2),
-                intake.speedCommand(() -> -1.).withTimeout(8))));
+                intake.speedCommand(() -> -.5).withTimeout(8))));
     autoChooser.addOption(
         "Deploy, Outtake, Drive",
         new Auto(
@@ -73,7 +73,7 @@ public class Autos {
             new SequentialCommandGroup(
                 intake.deployIntakeCommand().withTimeout(IntakeConstants.intakeDeployTime),
                 Commands.waitSeconds(2),
-                intake.speedCommand(() -> -1.0).withTimeout(8),
+                intake.speedCommand(() -> -.5).withTimeout(8),
                 DriveCommands.joystickDriveCommand(
                         drive, () -> 0, () -> -.3, () -> 0, () -> 1, () -> 1)
                     .withTimeout(5))));
@@ -138,6 +138,10 @@ public class Autos {
                     .withTimeout(0.5),
                 DriveCommands.joystickDriveCommand(
                     drive, () -> 0, () -> 0, () -> -1, () -> 1, () -> 1))));
+    autoChooser.addOption(
+        "Outtake",
+        new Auto(
+            "Outtake", intake.speedCommand(() -> -IntakeConstants.intakeSpeed).withTimeout(1)));
 
     Controls.addPersistentTrigger(
         () ->

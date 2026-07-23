@@ -20,12 +20,8 @@ public class Intake extends SubsystemBase {
     Logger.recordOutput("intake/speed", speedSupplier);
   }
 
-  public void stopMotor() {
+  private void stopMotor() {
     intakeIO.stopMotor();
-  }
-
-  private void deployIntake() {
-    intakeIO.deploy();
   }
 
   private void retract() {
@@ -45,7 +41,7 @@ public class Intake extends SubsystemBase {
   }
 
   public Command deployIntakeCommand() {
-    return Commands.startEnd(() -> deployIntake(), () -> stopDeployMotor(), this);
+    return Commands.startEnd(() -> spinUp(1), () -> stopDeployMotor(), this);
   }
 
   public Command retractCommand() {
