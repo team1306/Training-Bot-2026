@@ -50,7 +50,7 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-        intake = new Intake(new IntakeIOEmpty());
+        intake = new Intake(new IntakeIOReal());
         break;
 
       default:

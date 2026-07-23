@@ -17,8 +17,6 @@ public class IntakeIOReal implements IntakeIO {
 
   TalonFX deployX60 = new TalonFX(IntakeConstants.deployID);
 
-  private boolean deployed = false;
-
   private final TalonFXSignals leftX60MotorSignal;
   private final TalonFXSignals leftX44MotorSignal;
   private final TalonFXSignals rightX60MotorSignal;
@@ -26,6 +24,8 @@ public class IntakeIOReal implements IntakeIO {
   private final TalonFXSignals deployMotorSignal;
 
   private final PIDTunable pidTunable;
+
+  private IntakeIO intakeIO;
 
   public IntakeIOReal() {
 
@@ -47,11 +47,12 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void setDutyCycle(double dutyCycle) {
-    leftIntakeX60.setControl(new DutyCycleOut(dutyCycle));
-    rightIntakeX60.setControl(new DutyCycleOut(dutyCycle));
-    leftIntakeX44.setControl(new DutyCycleOut(dutyCycle));
-    rightIntakeX44.setControl(new DutyCycleOut(dutyCycle));
+  public void setDutyCycle(double speed) {
+    leftIntakeX60.setControl(new DutyCycleOut(speed));
+    rightIntakeX60.setControl(new DutyCycleOut(speed));
+    leftIntakeX44.setControl(new DutyCycleOut(speed));
+    rightIntakeX44.setControl(new DutyCycleOut(speed));
+    System.out.println("3");
   }
 
   @Override
@@ -60,16 +61,19 @@ public class IntakeIOReal implements IntakeIO {
     rightIntakeX60.setControl(new NeutralOut());
     leftIntakeX44.setControl(new NeutralOut());
     rightIntakeX44.setControl(new NeutralOut());
+    System.out.println("3321");
   }
 
   @Override
   public void deploy() {
     deployX60.setControl(new DutyCycleOut(1));
+    System.out.println("5");
   }
 
   @Override
   public void stopDeploy() {
     deployX60.setControl(new DutyCycleOut(0));
+    System.out.println("6");
   }
 
   @Override
