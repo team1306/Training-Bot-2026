@@ -70,7 +70,7 @@ public class CompetitionControllerMapping extends ControllerMapping {
         .onTrue(
             intake.speedCommand(
                 () -> {
-                  if (intakeState == IntakeState.NEUTRAL || intakeState == IntakeState.OUTTAKING) {
+                  if (intakeState != IntakeState.INTAKING) {
                     intakeState = IntakeState.INTAKING;
                     return Double.valueOf(IntakeConstants.intakeSpeed + intakeSpeedAdjustment);
                   }
@@ -82,7 +82,7 @@ public class CompetitionControllerMapping extends ControllerMapping {
         .onTrue(
             intake.speedCommand(
                 () -> {
-                  if (intakeState == IntakeState.NEUTRAL || intakeState == IntakeState.INTAKING) {
+                  if (intakeState != IntakeState.OUTTAKING) {
                     intakeState = IntakeState.OUTTAKING;
                     return Double.valueOf(
                         -IntakeConstants.intakeSpeed
@@ -93,17 +93,27 @@ public class CompetitionControllerMapping extends ControllerMapping {
                   return 0.0;
                 }));
 
-    /* ---P2---  -IntakeConstants.intakeSpeed - intakeSpeedAdjustment - outtakeSpeedAdjustment  */
+    /* ---P2--- */
     operatorController
         .a()
-        .whileTrue(intake.speedCommand(() -> {
-            intakeState = IntakeState.INTAKING;
-            return IntakeConstants.intakeSpeed + intakeSpeedAdjustment;})).onFalse(new InstantCommand(() -> intakeState = IntakeState.NEUTRAL));
+        .whileTrue(
+            intake.speedCommand(
+                () -> {
+                  intakeState = IntakeState.INTAKING;
+                  return IntakeConstants.intakeSpeed + intakeSpeedAdjustment;
+                }))
+        .onFalse(new InstantCommand(() -> intakeState = IntakeState.NEUTRAL));
     operatorController
-        .a()
-        .whileTrue(intake.speedCommand(() -> {
-            intakeState = IntakeState.OUTTAKING;
-            return -IntakeConstants.intakeSpeed - intakeSpeedAdjustment - outtakeSpeedAdjustment;})).onFalse(new InstantCommand(() -> intakeState = IntakeState.NEUTRAL));
+        .y()
+        .whileTrue(
+            intake.speedCommand(
+                () -> {
+                  intakeState = IntakeState.OUTTAKING;
+                  return -IntakeConstants.intakeSpeed
+                      - intakeSpeedAdjustment
+                      - outtakeSpeedAdjustment;
+                }))
+        .onFalse(new InstantCommand(() -> intakeState = IntakeState.NEUTRAL));
 
     operatorController.leftBumper().whileTrue(intake.deployIntakeCommand());
     operatorController.rightBumper().whileTrue(intake.retractCommand());
