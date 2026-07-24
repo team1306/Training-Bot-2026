@@ -43,7 +43,7 @@ public class Intake extends SubsystemBase {
   }
 
   public Command deployIntakeCommand() {
-    return Commands.startEnd(() -> spinUp(1), () -> stopDeployMotor(), this);
+    return Commands.startEnd(() -> intakeIO.deploy(), () -> stopDeployMotor(), this);
   }
 
   public Command retractCommand() {
