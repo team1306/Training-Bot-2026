@@ -52,7 +52,6 @@ public class IntakeIOReal implements IntakeIO {
     rightIntakeX60.setControl(new DutyCycleOut(speed));
     leftIntakeX44.setControl(new DutyCycleOut(speed));
     rightIntakeX44.setControl(new DutyCycleOut(speed));
-    System.out.println("3");
   }
 
   @Override
@@ -61,19 +60,16 @@ public class IntakeIOReal implements IntakeIO {
     rightIntakeX60.setControl(new NeutralOut());
     leftIntakeX44.setControl(new NeutralOut());
     rightIntakeX44.setControl(new NeutralOut());
-    System.out.println("3321");
   }
 
   @Override
   public void deploy() {
     deployX60.setControl(new DutyCycleOut(1));
-    System.out.println("5");
   }
 
   @Override
   public void stopDeploy() {
     deployX60.setControl(new DutyCycleOut(0));
-    System.out.println("6");
   }
 
   @Override

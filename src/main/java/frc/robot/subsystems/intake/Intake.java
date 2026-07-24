@@ -18,12 +18,12 @@ public class Intake extends SubsystemBase {
 
   public void spinUp(double speedSupplier) {
     intakeIO.setDutyCycle(speedSupplier);
-    System.out.println("2");
     Logger.recordOutput("intake/speed", speedSupplier);
   }
 
   private void stopMotor() {
     intakeIO.stopMotor();
+    Logger.recordOutput("intake/speed", 0);
   }
 
   private void retract() {

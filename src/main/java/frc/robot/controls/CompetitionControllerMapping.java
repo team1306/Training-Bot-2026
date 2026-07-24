@@ -16,6 +16,14 @@ public class CompetitionControllerMapping extends ControllerMapping {
   private final Drive drive;
   private Intake intake;
 
+  private static enum IntakeState {
+    OUTTAKING,
+    INTAKING,
+    NEUTRAL
+  }
+
+  private static IntakeState intakeState;
+
   public CompetitionControllerMapping(
       CommandXboxController driverController,
       CommandXboxController operatorController,
@@ -24,6 +32,7 @@ public class CompetitionControllerMapping extends ControllerMapping {
     super(driverController, operatorController);
     this.drive = drive;
     this.intake = intake;
+    intakeState = IntakeState.NEUTRAL;
   }
 
   static double intakeSpeedAdjustment = 0;
@@ -56,16 +65,46 @@ public class CompetitionControllerMapping extends ControllerMapping {
                     drive)
                 .ignoringDisable(true));
 
-    /* ---P2--- */
+    driverController
+        .x()
+        .onTrue(
+            intake.speedCommand(
+                () -> {
+                  if (intakeState == IntakeState.NEUTRAL || intakeState == IntakeState.OUTTAKING) {
+                    intakeState = IntakeState.INTAKING;
+                    return Double.valueOf(IntakeConstants.intakeSpeed + intakeSpeedAdjustment);
+                  }
+                  return 0.0;
+                }));
+
+    driverController
+        .b()
+        .onTrue(
+            intake.speedCommand(
+                () -> {
+                  if (intakeState == IntakeState.NEUTRAL || intakeState == IntakeState.INTAKING) {
+                    intakeState = IntakeState.OUTTAKING;
+                    return Double.valueOf(
+                        -IntakeConstants.intakeSpeed
+                            - intakeSpeedAdjustment
+                            - outtakeSpeedAdjustment);
+                  }
+                  intakeState = IntakeState.NEUTRAL;
+                  return 0.0;
+                }));
+
+    /* ---P2---  -IntakeConstants.intakeSpeed - intakeSpeedAdjustment - outtakeSpeedAdjustment  */
     operatorController
         .a()
-        .whileTrue(intake.speedCommand(() -> IntakeConstants.intakeSpeed + intakeSpeedAdjustment));
+        .whileTrue(intake.speedCommand(() -> {
+            intakeState = IntakeState.INTAKING;
+            return IntakeConstants.intakeSpeed + intakeSpeedAdjustment;})).onFalse(new InstantCommand(() -> intakeState = IntakeState.NEUTRAL));
     operatorController
-        .y()
-        .whileTrue(
-            intake.speedCommand(
-                () ->
-                    -IntakeConstants.intakeSpeed - intakeSpeedAdjustment - outtakeSpeedAdjustment));
+        .a()
+        .whileTrue(intake.speedCommand(() -> {
+            intakeState = IntakeState.OUTTAKING;
+            return -IntakeConstants.intakeSpeed - intakeSpeedAdjustment - outtakeSpeedAdjustment;})).onFalse(new InstantCommand(() -> intakeState = IntakeState.NEUTRAL));
+
     operatorController.leftBumper().whileTrue(intake.deployIntakeCommand());
     operatorController.rightBumper().whileTrue(intake.retractCommand());
 
